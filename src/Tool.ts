@@ -124,7 +124,11 @@ export class Tool {
     if (this.bot.inventory.emptySlotCount() >= 1) { itemList.unshift(undefined) }
 
     if (options.requireHarvest != null && options.requireHarvest) {
-      itemList = itemList.filter(item => block.canHarvest(item != null ? item.type : null))
+      itemList = itemList.filter(item => {
+        const isBroken = item.maxDurability - item.nbt.value.Damage.value <= 10
+        const isDoNotBreak = options.donotBreakMaterials.some((element) => item.name.includes(element))
+        block.canHarvest(item != null ? item.type : null)) && !(isBroken && isDoNotBreak)
+      }
     }
 
     itemList.sort((a, b) => this.getDigTime(block, a) - this.getDigTime(block, b))
