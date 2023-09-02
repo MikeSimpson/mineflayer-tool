@@ -124,7 +124,7 @@ export class Tool {
     if (this.bot.inventory.emptySlotCount() >= 1) { itemList.unshift(undefined) }
 
     itemList = itemList.filter(item => {
-      const isBroken = item?.nbt != null && item.maxDurability - nbt.simplify(item.nbt).Damage.value <= 10
+      const isBroken = item?.nbt != null && item.maxDurability - nbt.simplify(item.nbt).Damage <= 10
       const isDoNotBreak = options?.doNotBreakMaterials?.some((element) => item?.name.includes(element)) === true
 
       return !(isBroken && isDoNotBreak)
