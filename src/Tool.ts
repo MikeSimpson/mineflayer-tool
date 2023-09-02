@@ -87,7 +87,7 @@ export class Tool {
   /**
      * Gets the item currently in the bot's hand.
      */
-  private itemInHand (): Item | undefined {
+  private itemInHand (): Item | null {
     return this.bot.inventory.slots[this.bot.getEquipmentDestSlot('hand')]
   }
 
@@ -125,10 +125,10 @@ export class Tool {
 
     if (options.requireHarvest != null && options.requireHarvest) {
       itemList = itemList.filter(item => {
-        const isBroken = item.maxDurability - item.nbt.value.Damage.value <= 10
-        const isDoNotBreak = options.donotBreakMaterials.some((element) => item.name.includes(element))
-        block.canHarvest(item != null ? item.type : null)) && !(isBroken && isDoNotBreak)
-      }
+        const isBroken = item?.nbt != null && item.maxDurability - nbt.simplify(item.nbt).Damage.value <= 10
+        const isDoNotBreak = options?.doNotBreakMaterials?.some((element) => item?.name.includes(element)) === true
+        return block.canHarvest(item != null ? item.type : null) && !(isBroken && isDoNotBreak)
+      })
     }
 
     itemList.sort((a, b) => this.getDigTime(block, a) - this.getDigTime(block, b))
