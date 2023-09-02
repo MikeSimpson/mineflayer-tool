@@ -123,13 +123,15 @@ export class Tool {
     // Add an "undefined" item if the bot has empty space in it's inventory.
     if (this.bot.inventory.emptySlotCount() >= 1) { itemList.unshift(undefined) }
 
-    if (options.requireHarvest != null && options.requireHarvest) {
-      itemList = itemList.filter(item => {
-        const isBroken = item?.nbt != null && item.maxDurability - nbt.simplify(item.nbt).Damage.value <= 10
-        const isDoNotBreak = options?.doNotBreakMaterials?.some((element) => item?.name.includes(element)) === true
+    itemList = itemList.filter(item => {
+      const isBroken = item?.nbt != null && item.maxDurability - nbt.simplify(item.nbt).Damage.value <= 10
+      const isDoNotBreak = options?.doNotBreakMaterials?.some((element) => item?.name.includes(element)) === true
 
-        return block.canHarvest(item != null ? item.type : null) && !(isBroken && isDoNotBreak)
-      })
+      return !(isBroken && isDoNotBreak)
+    })
+
+    if (options.requireHarvest != null && options.requireHarvest) {
+      itemList = itemList.filter(item => block.canHarvest(item != null ? item.type : null))
     }
 
     itemList.sort((a, b) => this.getDigTime(block, a) - this.getDigTime(block, b))
