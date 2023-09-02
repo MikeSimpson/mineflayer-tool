@@ -125,10 +125,8 @@ export class Tool {
 
     if (options.requireHarvest != null && options.requireHarvest) {
       itemList = itemList.filter(item => {
-        console.log("damage: " + nbt.simplify(item!.nbt!).Damage.value + " durability: " + item?.maxDurability + " materials: "+ options?.doNotBreakMaterials)
         const isBroken = item?.nbt != null && item.maxDurability - nbt.simplify(item.nbt).Damage.value <= 10
         const isDoNotBreak = options?.doNotBreakMaterials?.some((element) => item?.name.includes(element)) === true
-        console.log("isBroken: " + isBroken + " isDoNotBreak: "+ isDoNotBreak)
 
         return block.canHarvest(item != null ? item.type : null) && !(isBroken && isDoNotBreak)
       })
