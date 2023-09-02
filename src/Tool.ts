@@ -40,6 +40,11 @@ export interface MiningEquipOptions {
      * to be pulled from the chest at once? Defaults to 1.
      */
   maxTools?: number
+
+  /**
+     * The bot will treat any tools in the list of materials as unusable if their durability is 1
+     */
+  doNotBreakMaterials?: string[]
 }
 
 /**
